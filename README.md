@@ -26,3 +26,9 @@ To setup the SDF Github Action located in `.github/workflows/pr.data_quality.yml
     - `SNOWFLAKE_ROLE`
 
 For more information on how to setup the SDF Github Action, please refer to the [SDF Action](https://github.com/sdf-labs/sdf-action) documentation.
+
+## To view the examples covered in the webinar, please view the following branches
+
+- compile_error_example: [compile_error_example](https://github.com/sdf-labs/moms_flower_shop_data_quality_webinar/tree/compile_error_example)
+- lint_examples: [lint_examples](https://github.com/sdf-labs/moms_flower_shop_data_quality_webinar/tree/lint_examples)
+- check_examples: [check_examples](https://github.com/sdf-labs/moms_flower_shop_data_quality_webinar/tree/check_examples)
