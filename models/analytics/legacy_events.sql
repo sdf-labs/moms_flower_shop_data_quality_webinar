@@ -4,5 +4,5 @@ SELECT
     install_time,
     platform,
     campaign_name,
-    campaign_type,
+    campaign_type
 FROM staging.app_installs
