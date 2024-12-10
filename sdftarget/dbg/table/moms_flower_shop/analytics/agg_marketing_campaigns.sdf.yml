@@ -1,0 +1,31 @@
+table:
+  name: MOMS_FLOWER_SHOP.ANALYTICS.AGG_MARKETING_CAMPAIGNS
+  dialect: snowflake
+  casing-policy: preserve
+  materialization: view
+  purpose: model
+  dependencies:
+  - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS
+  - MOMS_FLOWER_SHOP.STAGING.MARKETING_CAMPAIGNS
+  columns:
+  - name: CUSTOMER_ID
+    description: The identifier of the customer that performed the event
+    datatype: decimal(38, 0)
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.CUSTOMER_ID
+  - name: EVENT_COUNT
+    datatype: decimal(38, 0)
+    classifiers:
+    - EVENT.inapp
+    lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.EVENT_ID
+  lineage:
+    scan:
+    - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.CAMPAIGN_ID
+    - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.CUSTOMER_ID
+    - MOMS_FLOWER_SHOP.STAGING.MARKETING_CAMPAIGNS.CAMPAIGN_ID
+    - MOMS_FLOWER_SHOP.STAGING.MARKETING_CAMPAIGNS.CAMPAIGN_TYPE
+  source-locations:
+  - path: models/analytics/agg_marketing_campaigns.sql

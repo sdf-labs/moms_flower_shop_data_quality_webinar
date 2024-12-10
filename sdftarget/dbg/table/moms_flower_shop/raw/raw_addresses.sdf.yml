@@ -1,0 +1,51 @@
+table:
+  name: MOMS_FLOWER_SHOP.RAW.RAW_ADDRESSES
+  description: |
+    All relevant information related to street addresses known to mom's flower shop.  This information comes from the user input into the mobile app.
+  dialect: snowflake
+  casing-policy: preserve
+  materialization: table
+  purpose: model
+  origin: remote
+  exists-remotely: true
+  depended-on-by:
+  - MOMS_FLOWER_SHOP.STAGING.COMPLETE_MAILING_LIST
+  - MOMS_FLOWER_SHOP.STAGING.CUSTOMERS
+  columns:
+  - name: INDEX
+    description: Row number
+    datatype: decimal(38, 0)
+  - name: ADDRESS_ID
+    description: A unique identifier of an address
+    datatype: decimal(38, 0)
+  - name: FULL_ADDRESS
+    description: The full address associated with the address_id
+    datatype: varchar
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.COMPLETE_MAILING_LIST.CUSTOMER_ADDRESS
+      - MOMS_FLOWER_SHOP.STAGING.CUSTOMERS.FULL_ADDRESS
+  - name: STREET_NUMBER
+    description: The address street number associated with the address_id
+    datatype: decimal(38, 0)
+  - name: STREET_NAME
+    description: The address street name associated with the address_id
+    datatype: varchar
+  - name: STATE
+    description: The address US state associated with the address_id
+    datatype: varchar
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.COMPLETE_MAILING_LIST.CUSTOMER_STATE
+      - MOMS_FLOWER_SHOP.STAGING.CUSTOMERS.STATE
+  - name: CITY
+    description: The address US city associated with the address_id
+    datatype: varchar
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.COMPLETE_MAILING_LIST.CUSTOMER_CITY
+  classifiers:
+  - RETENTION.d7
+  source-locations:
+  - path: metadata/raw/raw_addresses.sdf.yml
+  - path: workspace.sdf.yml

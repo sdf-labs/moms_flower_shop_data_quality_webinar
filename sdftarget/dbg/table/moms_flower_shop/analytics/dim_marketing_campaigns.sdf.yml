@@ -1,0 +1,80 @@
+table:
+  name: MOMS_FLOWER_SHOP.ANALYTICS.DIM_MARKETING_CAMPAIGNS
+  dialect: snowflake
+  casing-policy: preserve
+  materialization: view
+  purpose: model
+  dependencies:
+  - MOMS_FLOWER_SHOP.STAGING.MARKETING_CAMPAIGNS
+  - MOMS_FLOWER_SHOP.STAGING.STG_INSTALLS_PER_CAMPAIGN
+  depended-on-by:
+  - MOMS_FLOWER_SHOP.ANALYTICS.HIGH_VALUE_CAMPAIGNS
+  columns:
+  - name: CAMPAIGN_ID
+    description: The identifier of the campaign that is associated with the event
+    datatype: decimal(38, 0)
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.MARKETING_CAMPAIGNS.CAMPAIGN_ID
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.ANALYTICS.HIGH_VALUE_CAMPAIGNS.CAMPAIGN_ID
+  - name: CAMPAIGN_NAME
+    description: The campaign name associated with the campaign_id
+    datatype: varchar
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.MARKETING_CAMPAIGNS.CAMPAIGN_NAME
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.ANALYTICS.HIGH_VALUE_CAMPAIGNS.CAMPAIGN_NAME
+  - name: TOTAL_NUM_INSTALLS
+    datatype: decimal(38, 0)
+    classifiers:
+    - EVENT.inapp
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.STG_INSTALLS_PER_CAMPAIGN.TOTAL_NUM_INSTALLS
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.ANALYTICS.HIGH_VALUE_CAMPAIGNS.TOTAL_NUM_INSTALLS
+  - name: AVG_CUSTOMER_ACQUISITION_COST
+    datatype: double
+    classifiers:
+    - EVENT.inapp
+    lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.STAGING.MARKETING_CAMPAIGNS.TOTAL_CAMPAIGN_SPENT
+      - MOMS_FLOWER_SHOP.STAGING.STG_INSTALLS_PER_CAMPAIGN.TOTAL_NUM_INSTALLS
+    forward-lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.ANALYTICS.HIGH_VALUE_CAMPAIGNS.AVG_COST_PER_INSTALL
+  - name: INSTALL_DURATION_RATIO
+    datatype: decimal(38, 6)
+    classifiers:
+    - EVENT.inapp
+    lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.STAGING.MARKETING_CAMPAIGNS.CAMPAIGN_DURATION
+      - MOMS_FLOWER_SHOP.STAGING.STG_INSTALLS_PER_CAMPAIGN.TOTAL_NUM_INSTALLS
+    forward-lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.ANALYTICS.HIGH_VALUE_CAMPAIGNS.CONVERSION_SPEED
+  - name: IS_HIGH_VALUE_CAMPAIGN
+    datatype: boolean
+    lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.STAGING.MARKETING_CAMPAIGNS.TOTAL_CAMPAIGN_SPENT
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.ANALYTICS.HIGH_VALUE_CAMPAIGNS.IS_HIGH_VALUE_CAMPAIGN
+  classifiers:
+  - RETENTION.infinity
+  lineage:
+    scan:
+    - MOMS_FLOWER_SHOP.STAGING.MARKETING_CAMPAIGNS.CAMPAIGN_ID
+    - MOMS_FLOWER_SHOP.STAGING.STG_INSTALLS_PER_CAMPAIGN.CAMPAIGN_ID
+    - MOMS_FLOWER_SHOP.STAGING.STG_INSTALLS_PER_CAMPAIGN.TOTAL_NUM_INSTALLS
+  source-locations:
+  - path: metadata/analytics/dim_marketing_campaigns.sdf.yml
+  - path: models/analytics/dim_marketing_campaigns.sql

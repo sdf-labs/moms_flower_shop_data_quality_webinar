@@ -1,0 +1,112 @@
+table:
+  name: MOMS_FLOWER_SHOP.STAGING.CUSTOMERS
+  dialect: snowflake
+  casing-policy: preserve
+  materialization: view
+  purpose: model
+  dependencies:
+  - MOMS_FLOWER_SHOP.RAW.RAW_ADDRESSES
+  - MOMS_FLOWER_SHOP.RAW.RAW_CUSTOMERS
+  - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2
+  depended-on-by:
+  - MOMS_FLOWER_SHOP.STAGING.COMPLETE_MAILING_LIST
+  columns:
+  - name: CUSTOMER_ID
+    description: A unique identifier of a mom's floewr shop customer
+    datatype: decimal(38, 0)
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.RAW.RAW_CUSTOMERS.ID
+  - name: FIRST_NAME
+    description: The first name of the customer
+    datatype: varchar
+    classifiers:
+    - PII.name
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.RAW.RAW_CUSTOMERS.FIRST_NAME
+  - name: LAST_NAME
+    description: The last name of the customer
+    datatype: varchar
+    classifiers:
+    - PII.name
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.RAW.RAW_CUSTOMERS.LAST_NAME
+  - name: FULL_NAME
+    datatype: varchar
+    classifiers:
+    - PII.name
+    lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.RAW.RAW_CUSTOMERS.FIRST_NAME
+      - MOMS_FLOWER_SHOP.RAW.RAW_CUSTOMERS.LAST_NAME
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.COMPLETE_MAILING_LIST.CUSTOMER_NAME
+  - name: EMAIL
+    description: The email of the customer
+    datatype: varchar
+    classifiers:
+    - PII.email
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.RAW.RAW_CUSTOMERS.EMAIL
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.COMPLETE_MAILING_LIST.CUSTOMER_EMAIL
+  - name: GENDER
+    description: The gender of the customer
+    datatype: varchar
+    classifiers:
+    - PII.gender
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.RAW.RAW_CUSTOMERS.GENDER
+  - name: CAMPAIGN_ID
+    description: The identifier of the campaign that is associated with the event
+    datatype: decimal(38, 0)
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CAMPAIGN_ID
+  - name: CAMPAIGN_NAME
+    description: The campaign name associated with the campaign_id
+    datatype: varchar
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CAMPAIGN_NAME
+  - name: CAMPAIGN_TYPE
+    description: |
+      A substring of the campaign name contain the campaign type.  Supported types - instagram_ads, friends_referrals, facebook_ads, google_search
+    datatype: varchar
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CAMPAIGN_TYPE
+  - name: ADDRESS_ID
+    description: The address_id of the address associated with the customer
+    datatype: decimal(38, 0)
+    classifiers:
+    - PII.address
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.RAW.RAW_CUSTOMERS.ADDRESS_ID
+  - name: FULL_ADDRESS
+    description: The full address associated with the address_id
+    datatype: varchar
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.RAW.RAW_ADDRESSES.FULL_ADDRESS
+  - name: STATE
+    description: The address US state associated with the address_id
+    datatype: varchar
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.RAW.RAW_ADDRESSES.STATE
+  lineage:
+    scan:
+    - MOMS_FLOWER_SHOP.RAW.RAW_ADDRESSES.ADDRESS_ID
+    - MOMS_FLOWER_SHOP.RAW.RAW_CUSTOMERS.ADDRESS_ID
+    - MOMS_FLOWER_SHOP.RAW.RAW_CUSTOMERS.ID
+    - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CUSTOMER_ID
+  source-locations:
+  - path: models/staging/customers.sql

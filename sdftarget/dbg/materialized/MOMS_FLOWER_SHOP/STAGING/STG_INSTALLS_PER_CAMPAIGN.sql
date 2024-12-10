@@ -1,0 +1,9 @@
+
+
+use MOMS_FLOWER_SHOP.STAGING;
+create or replace view MOMS_FLOWER_SHOP.STAGING.STG_INSTALLS_PER_CAMPAIGN as (SELECT
+    campaign_id,
+    COUNT(event_id) AS total_num_installs
+FROM MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2
+GROUP BY 1);
+

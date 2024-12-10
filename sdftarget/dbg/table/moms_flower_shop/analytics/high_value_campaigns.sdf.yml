@@ -1,0 +1,52 @@
+table:
+  name: MOMS_FLOWER_SHOP.ANALYTICS.HIGH_VALUE_CAMPAIGNS
+  dialect: snowflake
+  casing-policy: preserve
+  materialization: view
+  purpose: model
+  dependencies:
+  - MOMS_FLOWER_SHOP.ANALYTICS.DIM_MARKETING_CAMPAIGNS
+  columns:
+  - name: CAMPAIGN_ID
+    description: The identifier of the campaign that is associated with the event
+    datatype: decimal(38, 0)
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.ANALYTICS.DIM_MARKETING_CAMPAIGNS.CAMPAIGN_ID
+  - name: CAMPAIGN_NAME
+    description: The campaign name associated with the campaign_id
+    datatype: varchar
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.ANALYTICS.DIM_MARKETING_CAMPAIGNS.CAMPAIGN_NAME
+  - name: IS_HIGH_VALUE_CAMPAIGN
+    datatype: boolean
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.ANALYTICS.DIM_MARKETING_CAMPAIGNS.IS_HIGH_VALUE_CAMPAIGN
+  - name: TOTAL_NUM_INSTALLS
+    datatype: decimal(38, 0)
+    classifiers:
+    - EVENT.inapp
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.ANALYTICS.DIM_MARKETING_CAMPAIGNS.TOTAL_NUM_INSTALLS
+  - name: AVG_COST_PER_INSTALL
+    datatype: double
+    classifiers:
+    - EVENT.inapp
+    lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.ANALYTICS.DIM_MARKETING_CAMPAIGNS.AVG_CUSTOMER_ACQUISITION_COST
+  - name: CONVERSION_SPEED
+    datatype: varchar not null
+    lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.ANALYTICS.DIM_MARKETING_CAMPAIGNS.INSTALL_DURATION_RATIO
+  lineage:
+    scan:
+    - MOMS_FLOWER_SHOP.ANALYTICS.DIM_MARKETING_CAMPAIGNS.AVG_CUSTOMER_ACQUISITION_COST
+    - MOMS_FLOWER_SHOP.ANALYTICS.DIM_MARKETING_CAMPAIGNS.IS_HIGH_VALUE_CAMPAIGN
+    - MOMS_FLOWER_SHOP.ANALYTICS.DIM_MARKETING_CAMPAIGNS.TOTAL_NUM_INSTALLS
+  source-locations:
+  - path: models/analytics/high_value_campaigns.sql

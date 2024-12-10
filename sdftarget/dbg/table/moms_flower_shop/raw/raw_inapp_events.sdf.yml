@@ -1,0 +1,84 @@
+table:
+  name: MOMS_FLOWER_SHOP.RAW.RAW_INAPP_EVENTS
+  description: Logged actions (events) that users perform inside the mobile app of mom's flower shop.
+  dialect: snowflake
+  casing-policy: preserve
+  materialization: table
+  purpose: model
+  origin: remote
+  exists-remotely: true
+  depended-on-by:
+  - MOMS_FLOWER_SHOP.ANALYTICS.DIM_CATEGORIZE_INAPP_EVENTS
+  - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS
+  columns:
+  - name: INDEX
+    description: row_number
+    datatype: decimal(38, 0)
+  - name: EVENT_ID
+    description: A unique identifier of an in-app event within mom's flower shop's mobile app
+    datatype: decimal(38, 0)
+    classifiers:
+    - EVENT.inapp
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.ANALYTICS.DIM_CATEGORIZE_INAPP_EVENTS.EVENT_ID
+      - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.EVENT_ID
+  - name: CUSTOMER_ID
+    description: The identifier of the customer that performed the event
+    datatype: decimal(38, 0)
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.CUSTOMER_ID
+  - name: EVENT_TIME
+    description: The unixtime in which the event occurred
+    datatype: decimal(38, 0)
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.EVENT_TIME
+  - name: EVENT_NAME
+    description: The name of the in-app events. Supported events - install, add_to_cart, go_to_checkout, place_order
+    datatype: varchar
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.EVENT_NAME
+      modify:
+      - MOMS_FLOWER_SHOP.ANALYTICS.DIM_CATEGORIZE_INAPP_EVENTS.EVENT_CATEGORY
+  - name: EVENT_VALUE
+    description: |
+      Any numeric value associated with the event.  For example, upon placing an order, the event value would be the total order amount in USD.
+    datatype: double
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.EVENT_VALUE
+  - name: ADDITIONAL_DETAILS
+    description: |
+      A JSON containing additional details about the order.  For exmaple, upon placing an order, the additional details will contain a delivery ID and other order information.
+    datatype: varchar
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.ADDITIONAL_DETAILS
+  - name: PLATFORM
+    description: iOS or Android
+    datatype: varchar
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.PLATFORM
+      modify:
+      - MOMS_FLOWER_SHOP.ANALYTICS.DIM_CATEGORIZE_INAPP_EVENTS.EVENT_CATEGORY
+  - name: CAMPAIGN_ID
+    description: The identifier of a marketing campaign that is associated with the install of mom's flower shop mobile app.
+    datatype: varchar
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.CAMPAIGN_ID
+      modify:
+      - MOMS_FLOWER_SHOP.ANALYTICS.DIM_CATEGORIZE_INAPP_EVENTS.EVENT_CATEGORY
+  - name: '0'
+    datatype: decimal(38, 0)
+  - name: '1'
+    datatype: decimal(38, 0)
+  classifiers:
+  - RETENTION.d7
+  source-locations:
+  - path: metadata/raw/raw_inapp_events.sdf.yml
+  - path: workspace.sdf.yml

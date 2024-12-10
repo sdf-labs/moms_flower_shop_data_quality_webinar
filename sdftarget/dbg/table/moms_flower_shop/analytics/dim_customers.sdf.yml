@@ -1,0 +1,28 @@
+table:
+  name: MOMS_FLOWER_SHOP.ANALYTICS.DIM_CUSTOMERS
+  dialect: snowflake
+  casing-policy: preserve
+  materialization: view
+  purpose: model
+  dependencies:
+  - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS
+  columns:
+  - name: EVENT_ID
+    description: A unique identifier of an in-app event within mom's flower shop's mobile app
+    datatype: decimal(38, 0)
+    classifiers:
+    - EVENT.inapp
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.EVENT_ID
+  - name: CUSTOMER_ID
+    description: The identifier of the customer that performed the event
+    datatype: decimal(38, 0)
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.CUSTOMER_ID
+  lineage:
+    scan:
+    - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.EVENT_NAME
+  source-locations:
+  - path: models/analytics/dim_customers.sql

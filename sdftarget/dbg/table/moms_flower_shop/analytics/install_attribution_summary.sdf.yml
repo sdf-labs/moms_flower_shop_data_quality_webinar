@@ -1,0 +1,65 @@
+table:
+  name: MOMS_FLOWER_SHOP.ANALYTICS.INSTALL_ATTRIBUTION_SUMMARY
+  dialect: snowflake
+  casing-policy: preserve
+  materialization: view
+  purpose: model
+  dependencies:
+  - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2
+  columns:
+  - name: PLATFORM
+    description: iOS or Android
+    datatype: varchar
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.PLATFORM
+  - name: CAMPAIGN_TYPE
+    description: |
+      A substring of the campaign name contain the campaign type.  Supported types - instagram_ads, friends_referrals, facebook_ads, google_search
+    datatype: varchar
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CAMPAIGN_TYPE
+  - name: CAMPAIGN_NAME
+    description: The campaign name associated with the campaign_id
+    datatype: varchar
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CAMPAIGN_NAME
+  - name: INSTALL_COUNT
+    datatype: decimal(38, 0)
+    lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CUSTOMER_ID
+  - name: ORGANIC_INSTALLS
+    datatype: decimal(38, 0)
+    lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CAMPAIGN_ID
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CUSTOMER_ID
+  - name: PAID_INSTALLS
+    datatype: decimal(38, 0)
+    lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CAMPAIGN_ID
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CUSTOMER_ID
+  - name: PAID_INSTALL_PERCENTAGE
+    datatype: double
+    lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CAMPAIGN_ID
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CUSTOMER_ID
+  - name: ORGANIC_INSTALL_PERCENTAGE
+    datatype: double
+    lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CAMPAIGN_ID
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CUSTOMER_ID
+  lineage:
+    scan:
+    - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CAMPAIGN_NAME
+    - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CAMPAIGN_TYPE
+    - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CUSTOMER_ID
+    - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.PLATFORM
+  source-locations:
+  - path: models/analytics/install_attribution_summary.sql

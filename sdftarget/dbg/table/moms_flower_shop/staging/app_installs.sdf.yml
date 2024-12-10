@@ -1,0 +1,88 @@
+table:
+  name: MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS
+  description: |
+    This table is a staging table which adds campaign information to app install events
+  dialect: snowflake
+  casing-policy: preserve
+  materialization: view
+  purpose: model
+  dependencies:
+  - MOMS_FLOWER_SHOP.RAW.RAW_MARKETING_CAMPAIGN_EVENTS
+  - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS
+  depended-on-by:
+  - MOMS_FLOWER_SHOP.ANALYTICS.LEGACY_EVENTS
+  columns:
+  - name: EVENT_ID
+    datatype: decimal(38, 0)
+    classifiers:
+    - EVENT.inapp
+    - EVENT.marketing
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.RAW.RAW_MARKETING_CAMPAIGN_EVENTS.EVENT_ID
+      - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.EVENT_ID
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.ANALYTICS.LEGACY_EVENTS.EVENT_ID
+  - name: CUSTOMER_ID
+    description: The identifier of the customer that performed the event
+    datatype: decimal(38, 0)
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.CUSTOMER_ID
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.ANALYTICS.LEGACY_EVENTS.CUSTOMER_ID
+  - name: INSTALL_TIME
+    description: The unixtime in which the event occurred
+    datatype: decimal(38, 0)
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.EVENT_TIME
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.ANALYTICS.LEGACY_EVENTS.INSTALL_TIME
+  - name: PLATFORM
+    description: iOS or Android
+    datatype: varchar
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.PLATFORM
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.ANALYTICS.LEGACY_EVENTS.PLATFORM
+  - name: CAMPAIGN_ID
+    description: The identifier of the campaign that is associated with the event
+    datatype: decimal(38, 0)
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.RAW.RAW_MARKETING_CAMPAIGN_EVENTS.CAMPAIGN_ID
+  - name: CAMPAIGN_NAME
+    description: The campaign name associated with the campaign_id
+    datatype: varchar
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.RAW.RAW_MARKETING_CAMPAIGN_EVENTS.CAMPAIGN_NAME
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.ANALYTICS.LEGACY_EVENTS.CAMPAIGN_NAME
+  - name: CAMPAIGN_TYPE
+    description: |
+      A substring of the campaign name contain the campaign type.  Supported types - instagram_ads, friends_referrals, facebook_ads, google_search
+    datatype: varchar
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.RAW.RAW_MARKETING_CAMPAIGN_EVENTS.C_NAME
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.ANALYTICS.LEGACY_EVENTS.CAMPAIGN_TYPE
+  classifiers:
+  - TABLE_STATUS.deprecated
+  lineage:
+    scan:
+    - MOMS_FLOWER_SHOP.RAW.RAW_MARKETING_CAMPAIGN_EVENTS.EVENT_ID
+    - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.EVENT_ID
+    - MOMS_FLOWER_SHOP.STAGING.INAPP_EVENTS.EVENT_NAME
+  source-locations:
+  - path: metadata/staging/app_installs.sdf.yml
+  - path: models/staging/app_installs.sql

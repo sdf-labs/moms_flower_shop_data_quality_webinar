@@ -1,0 +1,30 @@
+table:
+  name: MOMS_FLOWER_SHOP.PUB.DEPRECATED_TABLES_GUARD
+  dialect: trino
+  casing-policy: preserve
+  materialization: view
+  purpose: check
+  dependencies:
+  - sdf.information_schema.table_lineage
+  - sdf.information_schema.tables
+  columns:
+  - name: table_id
+    description: The table_id of the table to which the lineage points. This field is null if the table named in `from_table_id` is a leaf table (i.e. does not have downstream dependencies).
+    datatype: varchar
+    lineage:
+      copy:
+      - sdf.information_schema.table_lineage.to_table_id
+  - name: upstream_deprecated_table_id
+    description: The table_id of the table from which the lineage originates. This field is null if the table named in `to_table_id` is a root table (i.e. does not have upstream dependencies).
+    datatype: varchar
+    lineage:
+      copy:
+      - sdf.information_schema.table_lineage.from_table_id
+  lineage:
+    scan:
+    - sdf.information_schema.table_lineage.from_table_id
+    - sdf.information_schema.table_lineage.to_table_id
+    - sdf.information_schema.tables.classifiers
+    - sdf.information_schema.tables.table_id
+  source-locations:
+  - path: checks/deprecated_tables_guard.sql

@@ -1,0 +1,66 @@
+table:
+  name: MOMS_FLOWER_SHOP.STAGING.MARKETING_CAMPAIGNS
+  dialect: snowflake
+  casing-policy: preserve
+  materialization: view
+  purpose: model
+  dependencies:
+  - MOMS_FLOWER_SHOP.RAW.RAW_MARKETING_CAMPAIGN_EVENTS
+  depended-on-by:
+  - MOMS_FLOWER_SHOP.ANALYTICS.AGG_MARKETING_CAMPAIGNS
+  - MOMS_FLOWER_SHOP.ANALYTICS.DIM_MARKETING_CAMPAIGNS
+  columns:
+  - name: CAMPAIGN_ID
+    description: The identifier of the campaign that is associated with the event
+    datatype: decimal(38, 0)
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.RAW.RAW_MARKETING_CAMPAIGN_EVENTS.CAMPAIGN_ID
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.ANALYTICS.DIM_MARKETING_CAMPAIGNS.CAMPAIGN_ID
+  - name: CAMPAIGN_NAME
+    description: The campaign name associated with the campaign_id
+    datatype: varchar
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.RAW.RAW_MARKETING_CAMPAIGN_EVENTS.CAMPAIGN_NAME
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.ANALYTICS.DIM_MARKETING_CAMPAIGNS.CAMPAIGN_NAME
+  - name: CAMPAIGN_TYPE
+    datatype: varchar
+    lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.RAW.RAW_MARKETING_CAMPAIGN_EVENTS.C_NAME
+  - name: CAMPAIGN_DURATION
+    datatype: decimal(38, 0)
+    lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.RAW.RAW_MARKETING_CAMPAIGN_EVENTS.EVENT_TIME
+    forward-lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.ANALYTICS.DIM_MARKETING_CAMPAIGNS.INSTALL_DURATION_RATIO
+  - name: TOTAL_CAMPAIGN_SPENT
+    datatype: double
+    lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.RAW.RAW_MARKETING_CAMPAIGN_EVENTS.COST
+    forward-lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.ANALYTICS.DIM_MARKETING_CAMPAIGNS.AVG_CUSTOMER_ACQUISITION_COST
+      - MOMS_FLOWER_SHOP.ANALYTICS.DIM_MARKETING_CAMPAIGNS.IS_HIGH_VALUE_CAMPAIGN
+  - name: EVENT_IDS
+    datatype: array
+    classifiers:
+    - EVENT.marketing
+    lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.RAW.RAW_MARKETING_CAMPAIGN_EVENTS.EVENT_ID
+  lineage:
+    scan:
+    - MOMS_FLOWER_SHOP.RAW.RAW_MARKETING_CAMPAIGN_EVENTS.C_NAME
+    - MOMS_FLOWER_SHOP.RAW.RAW_MARKETING_CAMPAIGN_EVENTS.CAMPAIGN_ID
+    - MOMS_FLOWER_SHOP.RAW.RAW_MARKETING_CAMPAIGN_EVENTS.CAMPAIGN_NAME
+  source-locations:
+  - path: models/staging/marketing_campaigns.sql

@@ -1,0 +1,26 @@
+table:
+  name: MOMS_FLOWER_SHOP.ANALYTICS.DIM_CATEGORIZE_INAPP_EVENTS
+  dialect: snowflake
+  casing-policy: preserve
+  materialization: view
+  purpose: model
+  dependencies:
+  - MOMS_FLOWER_SHOP.RAW.RAW_INAPP_EVENTS
+  columns:
+  - name: EVENT_ID
+    description: A unique identifier of an in-app event within mom's flower shop's mobile app
+    datatype: decimal(38, 0)
+    classifiers:
+    - EVENT.inapp
+    lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.RAW.RAW_INAPP_EVENTS.EVENT_ID
+  - name: EVENT_CATEGORY
+    datatype: varchar
+    lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.RAW.RAW_INAPP_EVENTS.CAMPAIGN_ID
+      - MOMS_FLOWER_SHOP.RAW.RAW_INAPP_EVENTS.EVENT_NAME
+      - MOMS_FLOWER_SHOP.RAW.RAW_INAPP_EVENTS.PLATFORM
+  source-locations:
+  - path: models/analytics/dim_categorize_inapp_events.sql

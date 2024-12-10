@@ -1,0 +1,216 @@
+{
+  "contents": {
+    "cli_vars": "99914b932bd37a50b983c5e7c90ae93b",
+    "credentials": "d5029255523257c9655f9675c2b4407c",
+    "env_vars": "d751713988987e9331980363e24189ce"
+  },
+  "prelude": [
+    {
+      "file": "workspace.sdf.yml",
+      "mtime": "2024-12-09T23:27:54.405178618Z"
+    },
+    {
+      "file": "metadata/analytics/agg_installs_and_campaigns.sdf.yml",
+      "mtime": "2024-12-04T05:42:00.399895774Z"
+    },
+    {
+      "file": "metadata/analytics/dim_marketing_campaigns.sdf.yml",
+      "mtime": "2024-12-04T05:42:00.399895774Z"
+    },
+    {
+      "file": "metadata/staging/app_installs.sdf.yml",
+      "mtime": "2024-12-05T22:38:14.953003789Z"
+    },
+    {
+      "file": "metadata/raw/raw_inapp_events.sdf.yml",
+      "mtime": "2024-12-09T23:27:54.389178456Z"
+    },
+    {
+      "file": "metadata/raw/raw_addresses.sdf.yml",
+      "mtime": "2024-12-09T23:27:54.389178456Z"
+    },
+    {
+      "file": "metadata/raw/raw_customers.sdf.yml",
+      "mtime": "2024-12-09T23:27:54.389178456Z"
+    },
+    {
+      "file": "metadata/raw/raw_marketing_campaign_events.sdf.yml",
+      "mtime": "2024-12-09T23:27:54.389178456Z"
+    },
+    {
+      "file": "metadata/staging/inapp_events.sdf.yml",
+      "mtime": "2024-12-04T05:42:00.399895774Z"
+    },
+    {
+      "file": "classifications/column_classifiers.sdf.yml",
+      "mtime": "2024-12-04T05:42:00.399895774Z"
+    },
+    {
+      "file": "classifications/table_classifiers.sdf.yml",
+      "mtime": "2024-12-04T05:42:00.399895774Z"
+    },
+    {
+      "file": "sdftarget/dbg/.lib/sdf_test/workspace.sdf.yml",
+      "mtime": "2024-12-09T23:56:32.764100343Z"
+    },
+    {
+      "file": "sdftarget/dbg/.lib/sdf_utils/workspace.sdf.yml",
+      "mtime": "2024-12-09T23:56:32.764100343Z"
+    },
+    {
+      "file": "sdftarget/dbg/.lib/sdf_mat/workspace.sdf.yml",
+      "mtime": "2024-12-09T23:56:32.764100343Z"
+    },
+    {
+      "file": "metadata/analytics/agg_installs_and_campaigns.sdf.yml",
+      "mtime": "2024-12-04T05:42:00.399895774Z"
+    },
+    {
+      "file": "metadata/analytics/dim_marketing_campaigns.sdf.yml",
+      "mtime": "2024-12-04T05:42:00.399895774Z"
+    },
+    {
+      "file": "metadata/staging/app_installs.sdf.yml",
+      "mtime": "2024-12-05T22:38:14.953003789Z"
+    },
+    {
+      "file": "metadata/raw/raw_inapp_events.sdf.yml",
+      "mtime": "2024-12-09T23:27:54.389178456Z"
+    },
+    {
+      "file": "metadata/raw/raw_addresses.sdf.yml",
+      "mtime": "2024-12-09T23:27:54.389178456Z"
+    },
+    {
+      "file": "metadata/raw/raw_customers.sdf.yml",
+      "mtime": "2024-12-09T23:27:54.389178456Z"
+    },
+    {
+      "file": "metadata/raw/raw_marketing_campaign_events.sdf.yml",
+      "mtime": "2024-12-09T23:27:54.389178456Z"
+    },
+    {
+      "file": "metadata/staging/inapp_events.sdf.yml",
+      "mtime": "2024-12-04T05:42:00.399895774Z"
+    },
+    {
+      "file": "sdftarget/dbg/.lib/sdf_test/macros/test.jinja",
+      "mtime": "2024-12-09T23:56:32.764100343Z"
+    },
+    {
+      "file": "sdftarget/dbg/.lib/sdf_utils/macros/generate_integer_values.jinja",
+      "mtime": "2024-12-09T23:56:32.764100343Z"
+    },
+    {
+      "file": "sdftarget/dbg/.lib/sdf_utils/macros/generate_date_values.jinja",
+      "mtime": "2024-12-09T23:56:32.764100343Z"
+    },
+    {
+      "file": "sdftarget/dbg/.lib/sdf_utils/macros/date_spine.jinja",
+      "mtime": "2024-12-09T23:56:32.764100343Z"
+    },
+    {
+      "file": "sdftarget/dbg/.lib/sdf_utils/macros/group_by.jinja",
+      "mtime": "2024-12-09T23:56:32.764100343Z"
+    },
+    {
+      "file": "sdftarget/dbg/.lib/sdf_utils/macros/generate_surrogate_key.jinja",
+      "mtime": "2024-12-09T23:56:32.764100343Z"
+    },
+    {
+      "file": "sdftarget/dbg/.lib/sdf_mat/macros/dialect/snowflake/materialize.jinja",
+      "mtime": "2024-12-09T23:56:32.764100343Z"
+    },
+    {
+      "file": "sdftarget/dbg/makefile-compile.json",
+      "mtime": "2024-12-10T02:19:10.256427373Z"
+    }
+  ],
+  "deps": [
+    {
+      "target": "MOMS_FLOWER_SHOP.PUB.ANALYTICS_PII_GUARD",
+      "deps": [
+        "sdf.information_schema.columns"
+      ]
+    },
+    {
+      "target": "MOMS_FLOWER_SHOP.PUB.DEPRECATED_TABLES_GUARD",
+      "deps": [
+        "sdf.information_schema.table_lineage",
+        "sdf.information_schema.tables"
+      ]
+    }
+  ],
+  "source_files": {
+    "values": {
+      "MOMS_FLOWER_SHOP.PUB.ANALYTICS_PII_GUARD": [
+        {
+          "file": "checks/analytics_pii_guard.sql",
+          "mtime": "2024-12-09T23:27:58.569220858Z"
+        }
+      ],
+      "MOMS_FLOWER_SHOP.PUB.DEPRECATED_TABLES_GUARD": [
+        {
+          "file": "checks/deprecated_tables_guard.sql",
+          "mtime": "2024-12-09T23:27:58.569220858Z"
+        }
+      ],
+      "system.\"information_schema::sdf\".column_lineage": [
+        {
+          "file": "sdftarget/dbg/data/sdf/information_schema/column_lineage",
+          "mtime": "2024-12-10T02:19:10.256427373Z"
+        }
+      ],
+      "system.\"information_schema::sdf\".columns": [
+        {
+          "file": "sdftarget/dbg/data/sdf/information_schema/columns",
+          "mtime": "2024-12-10T02:19:10.240427207Z"
+        }
+      ],
+      "system.\"information_schema::sdf\".table_lineage": [
+        {
+          "file": "sdftarget/dbg/data/sdf/information_schema/table_lineage",
+          "mtime": "2024-12-10T02:19:10.244427248Z"
+        }
+      ],
+      "system.\"information_schema::sdf\".tables": [
+        {
+          "file": "sdftarget/dbg/data/sdf/information_schema/tables",
+          "mtime": "2024-12-10T02:19:10.228427083Z"
+        }
+      ]
+    }
+  },
+  "incomplete_source_files": {
+    "values": []
+  },
+  "target_status": {
+    "values": {
+      "MOMS_FLOWER_SHOP.PUB.ANALYTICS_PII_GUARD": {
+        "purpose": "check",
+        "status": "passed",
+        "draft": false
+      },
+      "MOMS_FLOWER_SHOP.PUB.DEPRECATED_TABLES_GUARD": {
+        "purpose": "check",
+        "status": "passed",
+        "draft": false
+      },
+      "sdf.information_schema.columns": {
+        "purpose": "model",
+        "status": "succeeded",
+        "draft": false
+      },
+      "sdf.information_schema.table_lineage": {
+        "purpose": "model",
+        "status": "succeeded",
+        "draft": false
+      },
+      "sdf.information_schema.tables": {
+        "purpose": "model",
+        "status": "succeeded",
+        "draft": false
+      }
+    }
+  }
+}

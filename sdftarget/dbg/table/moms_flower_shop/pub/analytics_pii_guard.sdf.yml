@@ -1,0 +1,33 @@
+table:
+  name: MOMS_FLOWER_SHOP.PUB.ANALYTICS_PII_GUARD
+  dialect: trino
+  casing-policy: preserve
+  materialization: view
+  purpose: check
+  dependencies:
+  - sdf.information_schema.columns
+  columns:
+  - name: table_name
+    description: The table_name of the table to which the column belongs.
+    datatype: varchar not null
+    lineage:
+      copy:
+      - sdf.information_schema.columns.table_name
+  - name: table_id
+    description: The table_id (i.e. {catalog}.{schema}.{table}) of the table to which the column belongs.
+    datatype: varchar not null
+    lineage:
+      copy:
+      - sdf.information_schema.columns.table_id
+  - name: column_name
+    description: The column_name of the column.
+    datatype: varchar not null
+    lineage:
+      copy:
+      - sdf.information_schema.columns.column_name
+  lineage:
+    scan:
+    - sdf.information_schema.columns.classifiers
+    - sdf.information_schema.columns.schema_name
+  source-locations:
+  - path: checks/analytics_pii_guard.sql

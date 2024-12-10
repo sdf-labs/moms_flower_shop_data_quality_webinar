@@ -1,0 +1,71 @@
+table:
+  name: MOMS_FLOWER_SHOP.RAW.RAW_MARKETING_CAMPAIGN_EVENTS
+  description: |
+    An hourly table logging marketing campaigns. If a campaign is running that hour, it will be logged in the table.  If no campaigns are running for a certain houe, no campaigns will be logged.
+  dialect: snowflake
+  casing-policy: preserve
+  materialization: table
+  purpose: model
+  origin: remote
+  exists-remotely: true
+  depended-on-by:
+  - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS
+  - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2
+  - MOMS_FLOWER_SHOP.STAGING.MARKETING_CAMPAIGNS
+  columns:
+  - name: EVENT_ID
+    description: A unique identifier of the marketing campaign event
+    datatype: decimal(38, 0)
+    classifiers:
+    - EVENT.marketing
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS.EVENT_ID
+      modify:
+      - MOMS_FLOWER_SHOP.STAGING.MARKETING_CAMPAIGNS.EVENT_IDS
+  - name: EVENT_TIME
+    description: A unixtime of the marketing event logging time (logged hourly)
+    datatype: decimal(38, 0)
+    forward-lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.STAGING.MARKETING_CAMPAIGNS.CAMPAIGN_DURATION
+  - name: CAMPAIGN_ID
+    description: The identifier of the campaign that is associated with the event
+    datatype: decimal(38, 0)
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS.CAMPAIGN_ID
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CAMPAIGN_ID
+      - MOMS_FLOWER_SHOP.STAGING.MARKETING_CAMPAIGNS.CAMPAIGN_ID
+  - name: CAMPAIGN_NAME
+    description: The campaign name associated with the campaign_id
+    datatype: varchar
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS.CAMPAIGN_NAME
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CAMPAIGN_NAME
+      - MOMS_FLOWER_SHOP.STAGING.MARKETING_CAMPAIGNS.CAMPAIGN_NAME
+  - name: C_NAME
+    description: |
+      A substring of the campaign name contain the campaign type.  Supported types - instagram_ads, friends_referrals, facebook_ads, google_search
+    datatype: varchar
+    forward-lineage:
+      copy:
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS.CAMPAIGN_TYPE
+      - MOMS_FLOWER_SHOP.STAGING.APP_INSTALLS_V2.CAMPAIGN_TYPE
+      modify:
+      - MOMS_FLOWER_SHOP.STAGING.MARKETING_CAMPAIGNS.CAMPAIGN_TYPE
+  - name: PRIORITY
+    description: Internal priority - do not use
+    datatype: decimal(38, 0)
+  - name: COST
+    description: The cost of running the campaign for the hour
+    datatype: double
+    forward-lineage:
+      modify:
+      - MOMS_FLOWER_SHOP.STAGING.MARKETING_CAMPAIGNS.TOTAL_CAMPAIGN_SPENT
+  classifiers:
+  - RETENTION.d7
+  source-locations:
+  - path: metadata/raw/raw_marketing_campaign_events.sdf.yml
+  - path: workspace.sdf.yml
